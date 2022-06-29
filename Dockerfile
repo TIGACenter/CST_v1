@@ -1,6 +1,5 @@
 ARG BASE_CONTAINER=tensorflow/tensorflow:1.12.0-gpu
 
-
 FROM $BASE_CONTAINER
 LABEL maintainer="Felipe Miranda <felipe.miranda@stcmed.com>"
 
@@ -17,7 +16,6 @@ RUN cd main_dir
 WORKDIR /main_dir
 RUN mkdir env_files
 
-# ADD reqs.txt /main_dir/env_files
 ADD requirements.txt /main_dir/env_files
 
 RUN add-apt-repository ppa:fkrull/deadsnakes
@@ -32,11 +30,8 @@ RUN apt-get update \
 RUN wget https://bootstrap.pypa.io/pip/3.6/get-pip.py
 RUN python3.6 get-pip.py
 
-# RUN python3.6 -m pip install -r /main_dir/env_files/reqs.txt
 RUN python3.6 -m pip install -r /main_dir/env_files/requirements.txt
 
-
-# RUN apt-get update --fix-missing
-# RUN apt-get install -y python3-openslide
+RUN python3.6 -m ipykernel install --user --name python3.6
 
 RUN apt-get update && apt-get install -y libsm6 libxext6 libxrender-dev

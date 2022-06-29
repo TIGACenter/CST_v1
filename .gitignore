@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
+*.csv
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -85,6 +87,10 @@ target/
 # IPython
 profile_default/
 ipython_config.py
+
+# numpy stuff
+*.npy
+*.npz
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
