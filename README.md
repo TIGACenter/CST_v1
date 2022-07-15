@@ -35,8 +35,12 @@ Run image:
 
 ```bash
 $ sudo docker run -p 8888:8888  -it --rm -v </path/to/this/repository>:/main_dir/CST_v1 --runtime=nvidia cst_v1:latest /bin/bash
-
 # adapt volumes if a different path is needed for the data. Otherwise, move data to the 'CST_v1/data'
+
+# inside the docker container go to the CST_v1 folder
+/main_dir# cd CST_v1
+
+
 ```
 
 #### Without docker 
@@ -49,11 +53,11 @@ $ pip install -r requirements.txt
 
 
 
-
-
 ## Usage
 
 #### With docker:
+
+(in folder CST_v1 from the docker container)
 
 Download datasets: 
 ```bash
@@ -63,7 +67,7 @@ $ python3.6 load_data.py --name <dataset1> <dataset2> ...  # options are idc, ci
 Train network:
 
 ```bash
-$ python3.6 train.py --conf <conf_path> # conf_path is the path to a config json file with the 
+$ python3.6 train.py --conf <conf_path> # conf_path is the path to a config json file with the parameters. e.g. train_config.json
 ```
 
 Run jupyter notebooks:
@@ -99,10 +103,7 @@ This file contains all the parameters that need to be set to train a network usi
             "amsgrad": true
         }
     },
-    "loss": {                                     # loss (tf.keras.losses)
-        "class_name": "binary_crossentropy",      # name (e.g. binary_crossentropy, ...)
-        "config": {}                              # args
-    },
+    "loss": "binary_crossentropy",                # loss (tf.keras.losses)
     "class_mode": "binary",                       # class mode ("binary" or "categorical")
     "pretrained_model_path": null,                # path of custom model if exists. CST will be used to retrain
     "save_all_epochs": true,                      # if true, all epochs are saved

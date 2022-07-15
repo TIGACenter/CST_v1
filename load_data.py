@@ -12,7 +12,7 @@ import cv2
 import utils
 
 
-def load_aj_idc():
+def load_aj_idc(PATH=None):
     """
     Dataset: Invasive Ductal Carcinoma Identification.
     Author: Andrew Janowczyk
@@ -23,7 +23,8 @@ def load_aj_idc():
     """
 
     URL = "http://andrewjanowczyk.com/wp-static/IDC_regular_ps50_idx5.zip"
-    PATH = "data/aj"
+    if PATH is None:
+        PATH = "data/aj"
 
     print("Dataset: Invasive Ductal Carcinoma Identification.\nAuthor: Andrew Janowczyk")
     print("source: http://andrewjanowczyk.com/deep-learning/")
@@ -56,8 +57,9 @@ def load_aj_idc():
     print("...Organization complete")
 
 
-def load_cifar_10():
-    PATH = "data/cifar-10"
+def load_cifar_10(PATH=None):
+    if PATH is None:
+        PATH = "data/cifar-10"
 
     print("Dataset: CIFAR-10")
     print("Source: https://www.cs.toronto.edu/~kriz/cifar.html")

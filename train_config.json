@@ -14,10 +14,7 @@
             "amsgrad": true
         }
     },
-    "loss": {
-        "class_name": "binary_crossentropy",
-        "config": {}
-    },
+    "loss": "binary_crossentropy",
     "class_mode": "binary",
     "pretrained_model_path": null,
     "save_all_epochs": true,

@@ -20,13 +20,10 @@ DEFAULT_CONFIG = {
         "class_name": "Adam",
         "config": {
             "lr": 0.0001,
-            "amsgrad": true
+            "amsgrad": True
         }
     },
-    "loss": {
-        "class_name": "binary_crossentropy",
-        "config": {}
-    },
+    "loss": "binary_crossentropy",
     "class_mode": "binary",
     "pretrained_model_path": None,
     "save_all_epochs": True,
@@ -46,10 +43,6 @@ DEFAULT_METRICS = {
     "auc": auc_m
 }
 
-DEFAULT_OPTIMIZERS = {
-    "Adam": tf.keras.optimizers.Adam,
-    "SGD": tf.keras.optimizers.SGD
-}
 
 def train(config_file=None):
     # load json config file
