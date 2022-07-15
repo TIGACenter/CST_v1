@@ -1,4 +1,5 @@
 import os
+import pathlib
 
 import tensorflow as tf
 import tensorflow.keras.backend as K
@@ -15,6 +16,7 @@ class EpochSaver(tf.keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs={}):
         if (epoch + 1) % 1 == 0:
+            pathlib.Path(self.model_path).mkdir(parents=True, exist_ok=True)
             self.model.layers[1].save(
                 os.path.join(self.model_path, self.model_name) + "_e" + str(epoch + 1) + ".h5")
             print("class weights saved to path: ")
@@ -24,6 +26,7 @@ class EpochSaver(tf.keras.callbacks.Callback):
 class ContrastiveStabilityTraining:
     def __init__(self, model, tile_size, dist_params={}, alpha=0):
         self.model = model
+        self.class_mode = "binary" if self.model.layers[-1].output_shape[-1] == 1 else ""
         self.tile_size = tile_size
         self.dist_params = dist_params
         self.alpha = alpha
@@ -39,20 +42,29 @@ class ContrastiveStabilityTraining:
         self.cst_model = tf.keras.models.Model(inputs=self.i, outputs=self.x_i)
 
     def compile_cst(self, optimizer, loss, metrics=[]):
+        cst_loss = self.cst_loss(self.x_i_dist, loss, self.alpha, self.class_mode)
         self.cst_model.compile(
             optimizer=optimizer,
-            loss=self.cst_loss(self.x_i_dist, self.alpha, loss),
-            metrics=["acc", self.cst_loss(self.x_i_dist, self.alpha, loss)] + metrics
+            loss=cst_loss,
+            metrics=["acc", cst_loss] + metrics
         )
 
     def train_cst(self, x, y=None, validation_data=None, save_all_epochs=False, model_save_path="",
                   model_name="model", save_metrics=False, class_weight={0: 1., 1: 1.}, workers=8,
-                  use_multiprocessing=True, epochs=1, callbacks=[]):
+                  use_multiprocessing=True, epochs=1, callbacks=None):
+
+        model_new_dir = os.path.join(model_save_path, model_name)
+
+        if callbacks is None:
+            callbacks = []
+
         if save_all_epochs:
-            callbacks.append(EpochSaver(model_save_path, model_name))
+            pathlib.Path(model_new_dir).mkdir(parents=True, exist_ok=True)
+            callbacks.append(EpochSaver(model_new_dir, model_name))
         if save_metrics:
+            pathlib.Path(model_new_dir).mkdir(parents=True, exist_ok=True)
             callbacks.append(tf.keras.callbacks.CSVLogger(
-                os.path.join(model_save_path, model_name) + ".csv", ","))
+                os.path.join(model_new_dir, model_name) + ".csv", ","))
 
         self.cst_model.fit(
             x=x,
@@ -66,24 +78,26 @@ class ContrastiveStabilityTraining:
         )
 
     def save_model(self, model_save_path, model_name):
-        self.cst_model.layers[1].save(os.path.join(model_save_path, model_name) + ".h5")
+        model_new_dir = os.path.join(model_save_path, model_name)
+        pathlib.Path(model_new_dir).mkdir(parents=True, exist_ok=True)
+        self.cst_model.layers[1].save(os.path.join(model_new_dir, model_name) + ".h5")
 
     @staticmethod
-    def cst_loss(x_i_dist, alpha=1., l_0=tf.keras.losses.binary_crossentropy):
+    def cst_loss(x_i_dist, l_0, alpha, class_mode):
         def loss(y_true, y_pred):
-            # l_0 = tf.keras.losses.binary_crossentropy(y_true, y_pred)
-            l_stability_1_col_1 = tf.keras.losses.kullback_leibler_divergence(y_pred, x_i_dist)
-            l_stability_1_col_2 = tf.keras.losses.kullback_leibler_divergence(1-y_pred, 1-x_i_dist)
-            l_stability = l_stability_1_col_1 + l_stability_1_col_2
-            return l_0(y_true, y_pred)  + l_stability * alpha
+            l = l_0(y_true, y_pred)
+            l_stability = tf.keras.losses.kullback_leibler_divergence(y_pred, x_i_dist)
+            if class_mode == "binary":
+                l_stability = l_stability + \
+                              tf.keras.losses.kullback_leibler_divergence(1-y_pred, 1-x_i_dist)
+            return l + l_stability * alpha
         return loss
 
 
 def dist_fn(images, tile_size=128, dist_params={}):
     """
-    Images have to be normalized centered in 0
+    Images have to be normalized and centered in 0
     """
-
     X = images
     if "color" in dist_params:
         pix_dist = dist_params["color"]["factor"]

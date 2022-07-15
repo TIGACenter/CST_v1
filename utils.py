@@ -2,7 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
-from tensorflow.keras.applications import InceptionV3
+from tensorflow.keras.applications import InceptionV3, ResNet50
 
 
 def list_file_paths(directory, extension=[".tif", ".png"]):
@@ -50,7 +50,7 @@ def gaussian_kernel(size: int, mean: float, std: float):
     return gauss_kernel
 
 
-def create_thesis_model(tile_size=128, channels=3, pretrained_path=None, final_layer_node=1):
+def create_thesis_model(tile_size=128, channels=3, pretrained_path=None, final_layer_node=1, arq="resnet"):
     """
       - tile_size: (int) size of input tile.
       - pretrained_path: (str) loads model according to path.
@@ -60,7 +60,10 @@ def create_thesis_model(tile_size=128, channels=3, pretrained_path=None, final_l
     """
     if pretrained_path is None:
         model = tf.keras.models.Sequential()
-        base = InceptionV3(weights='imagenet', include_top=False, input_shape=(tile_size, tile_size, channels))
+        if arq == "resnet":
+            base = ResNet50(weights='imagenet', include_top=False, input_shape=(tile_size, tile_size, channels))
+        else:
+            base = InceptionV3(weights='imagenet', include_top=False, input_shape=(tile_size, tile_size, channels))
         model.add(base)
         model.add(layers.Flatten())
         model.add(layers.Dense(128, activation='relu'))
