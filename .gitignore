@@ -1,9 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
-*.csv
-applications/
-data/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -241,3 +238,8 @@ cython_debug/
 *.h5py
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+*.csv
+applications/
+data/
+!static/*.png
