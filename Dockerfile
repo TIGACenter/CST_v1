@@ -1,4 +1,4 @@
-ARG BASE_CONTAINER=tensorflow/tensorflow:1.12.0-gpu
+ARG BASE_CONTAINER=tensorflow/tensorflow:1.12.3-gpu
 
 FROM $BASE_CONTAINER
 LABEL maintainer="Felipe Miranda <felipe.miranda@stcmed.com>"
@@ -18,10 +18,11 @@ RUN mkdir env_files
 
 ADD requirements.txt /main_dir/env_files
 
-RUN add-apt-repository ppa:fkrull/deadsnakes
+# https://askubuntu.com/questions/865554/how-do-i-install-python-3-6-using-apt-get
+RUN add-apt-repository -y ppa:jblgf0/python
 
 RUN apt update 
-RUN apt install -y python3.6
+RUN apt-get install -y python3.6
 
 RUN apt-get update \
   && apt-get install -y wget \

@@ -26,7 +26,7 @@ class EpochSaver(tf.keras.callbacks.Callback):
 class ContrastiveStabilityTraining:
     def __init__(self, model, tile_size, dist_params={}, alpha=0):
         self.model = model
-        self.class_mode = "binary" if self.model.layers[-1].output_shape[-1] == 1 else ""
+        self.class_mode = "binary" if self.model.layers[-1].units == 1 else ""
         self.tile_size = tile_size
         self.dist_params = dist_params
         self.alpha = alpha
