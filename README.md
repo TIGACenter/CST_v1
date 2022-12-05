@@ -8,7 +8,7 @@ Contrastive Learning-based Stability Training (CST), in the context of deep lear
 
 python 3.6
 
-CUDA 10.1 (or CUDA >= 10.1 for the docker setup)
+CUDA 9.0 (or CUDA >= 9.0 for the docker setup)
 
 python libraries: 
 - numpy==1.16.2
@@ -35,10 +35,8 @@ Run image:
 
 ```bash
 $ sudo docker run -p 8888:8888  -it --rm -v </path/to/this/repository>:/main_dir/CST_v1 --runtime=nvidia cst_v1:latest /bin/bash
-# adapt volumes if a different path is needed for the data. Otherwise, move data to the 'CST_v1/data'
-
-# inside the docker container go to the CST_v1 folder
-/main_dir# cd CST_v1
+# OBS: adapt volumes if a different path is needed for the data. Otherwise, move data to the 'CST_v1/data'
+# OBS: change port, select gpus, add user permissions (e.g. --user 1000:1000) or generally modify the run command as needed. 
 
 
 ```
@@ -57,7 +55,10 @@ $ pip install -r requirements.txt
 
 #### With docker:
 
-(in folder CST_v1 from the docker container)
+(in folder CST_v1 go to the CST_v1 folder)
+```bash
+$ cd CST_v1
+```
 
 Download datasets: 
 ```bash
@@ -79,7 +80,7 @@ Then open the url in your browser.
 
 #### Without docker:
 
-Same us above, just replace python3.6 with the python version you are using.
+Same us above. If python 3.6 is your default version, just use python instead of python3.6
 
 
 ## Config file for training

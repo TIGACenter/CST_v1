@@ -1,0 +1,30 @@
+{
+    "tile_size": 128,
+    "alpha": 10.0,
+    "dist_params": {
+        "contrast": {"lower": 0.8, "upper": 1.2},
+        "color": {"factor": [20,0,20]},
+        "blur": {"kernel_size": 1, "sigma": 3.0},
+        "brightness": {"max_delta": 0.3}
+    },
+    "optimizer": {
+        "class_name": "Adam",
+        "config": {
+            "lr": 0.0001,
+            "amsgrad": true
+        }
+    },
+    "loss": "binary_crossentropy",
+    "class_mode": "binary",
+    "pretrained_model_path": null,
+    "save_all_epochs": true,
+    "model_save_path": "models",
+    "model_name": "cst_3_real",
+    "save_metrics": true,
+    "epochs": 10,
+    "batch_size": 32,
+    "metrics": ["binary_crossentropy", "recall", "precision", "f1", "auc"],
+    "train_data_path": "/main_dir/felipe/schroederubuntu/isilon_scans/Scans/TIGA/People/Andi/epi_seg/128px_x20_RGB_Box1-4_modeRangePreprocessing_partialsAre0_p16/X",
+    "val_data_path": null,
+    "val_split": 0.2
+}
