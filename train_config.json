@@ -19,7 +19,7 @@
     "pretrained_model_path": null,
     "save_all_epochs": true,
     "model_save_path": "models",
-    "model_name": "model_name",
+    "model_name": "default_model_name",
     "save_metrics": true,
     "epochs": 10,
     "batch_size": 32,

@@ -132,14 +132,18 @@ if __name__ == "__main__":
     parser.add_argument('-n', '--name', nargs='+',
                         help="Name of the dataset you want to download", type=str)
     args = parser.parse_args()
-    d = False
-    if "idc" in args.name:
+    print(args.name)
+    if args.name is None:
         load_aj_idc()
-        d = True
-    if "cifar-10-c" in args.name:
-        load_cifar_10_c()
-        d = True
-    if  "cifar-10" in args.name:
-        load_cifar_10()
-        d = True
-    if not d: print("No valid dataset was provided. Run --help for extra info.")
+    else:
+        f = False
+        if "idc" in args.name:
+            load_aj_idc()
+            d = True
+        if "cifar-10-c" in args.name:
+            load_cifar_10_c()
+            d = True
+        if  "cifar-10" in args.name:
+            load_cifar_10()
+            d = True
+        if not d: print("No valid dataset was provided. Run --help for extra info.")

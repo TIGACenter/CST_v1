@@ -8,6 +8,8 @@ import CST as CST
 import utils
 from metrics import recall_m, precision_m, f1_m, auc_m
 
+DEFAULT_CONFIG_PATH = "train_config.json"
+
 DEFAULT_CONFIG = {
     "alpha": 1.0,
     "dist_params": {
@@ -44,12 +46,12 @@ DEFAULT_METRICS = {
 }
 
 
-def train(config_file=None):
+def train(config_path=None):
     # load json config file
-    conf = DEFAULT_CONFIG
-    if config_file is not None:
-        with open(config_file) as c:
-            conf = json.load(c)
+    if config_path is None:
+        config_path = DEFAULT_CONFIG_PATH
+    with open(config_path) as c:
+        conf = json.load(c)
 
     # create generator
     if conf["val_data_path"] is None:
@@ -140,4 +142,4 @@ if __name__ == "__main__":
     parser.add_argument("--conf", help="Path of the json config file", type=str)
     args = parser.parse_args()
 
-    train(config_file=args.conf)
+    train(config_path=args.conf)

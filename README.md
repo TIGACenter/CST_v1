@@ -8,15 +8,16 @@ Contrastive Learning-based Stability Training (CST), in the context of deep lear
 
 python 3.6
 
-CUDA 9.0 (or CUDA >= 9.0 for the docker setup)
+CUDA 10.0 (or CUDA >= 10.0 for the docker setup)
 
 python libraries: 
-- numpy==1.16.2
+- protobuf<4.21.0
+- tensorflow-gpu==1.13.1
+- numpy==1.16.4
 - scipy==1.2.1
-- matplotlib==3.0.3
-- ipykernel==5.1.1
 - opencv-python==4.1.0.25
-- tensorflow-gpu==1.12
+- matplotlib
+- ipykernel
 - pillow==6.0.0
 - h5py==2.10.0
 - requests==2.27.1
@@ -34,7 +35,8 @@ $ sudo docker build -f Dockerfile --tag cst_v1 .
 Run image:
 
 ```bash
-$ sudo docker run -p 8888:8888  -it --rm -v </path/to/this/repository>:/main_dir/CST_v1 --runtime=nvidia cst_v1:latest /bin/bash
+$ sudo docker run -p <port>  --user $(id -u):$(id -g) -it --rm -v </path/to/this/repository>:/main_dir/CST_v1 --gpus <gpus> cst_v1:latest /bin/bash
+# e.g. $ sudo docker run -p 8888:8888  --user $(id -u):$(id -g) -it --rm -v ~/my_projects/CST_v1:/main_dir/CST_v1 --gpus all cst_v1:latest /bin/bash
 # OBS: adapt volumes if a different path is needed for the data. Otherwise, move data to the 'CST_v1/data'
 # OBS: change port, select gpus, add user permissions (e.g. --user 1000:1000) or generally modify the run command as needed. 
 
@@ -55,20 +57,17 @@ $ pip install -r requirements.txt
 
 #### With docker:
 
-(in folder CST_v1 go to the CST_v1 folder)
-```bash
-$ cd CST_v1
-```
-
 Download datasets: 
 ```bash
-$ python3.6 load_data.py --name <dataset1> <dataset2> ...  # options are idc, cifar-10, cifar-10-c
+$ python3 load_data.py --name <dataset1> <dataset2> ...  # options are idc, cifar-10, cifar-10-c. Default is idc
+# e.g. $ python3 load_data.py --name idc cifar-10
 ```
 
 Train network:
 
 ```bash
-$ python3.6 train.py --conf <conf_path> # conf_path is the path to a config json file with the parameters. e.g. train_config.json
+$ python3 train.py --conf <conf_path> # conf_path is the path to a config json file with the parameters. Default is train_config.json
+# e.g. $ python3 train.py --conf train_config.json
 ```
 
 Run jupyter notebooks:
@@ -109,7 +108,7 @@ This file contains all the parameters that need to be set to train a network usi
     "pretrained_model_path": null,                # path of custom model if exists. CST will be used to retrain
     "save_all_epochs": true,                      # if true, all epochs are saved
     "model_save_path": "models",                  # path to save models
-    "model_name": "model_name",                   # name of models to save, will be saved as "model_name.h5"
+    "model_name": "default_model_name",           # name of models to save, will be saved as "model_name.h5"
     "save_metrics": true,                         # if true, creates csv and adds metrics on epoch end
     "epochs": 10,                                 # n of epochs
     "batch_size": 32,                             # batch size
