@@ -9,3 +9,5 @@ ipykernel
 pillow==6.0.0
 h5py==2.10.0
 requests==2.27.1
+notebook==5.7.16
+pathlib

@@ -4,6 +4,9 @@ Contrastive Learning-based Stability Training (CST), in the context of deep lear
 
 <img align="center" src="static/cst_segmentation.png" width="800">
 
+## Notes
+Tested with Nvidia Geforce RTX 2070 and 2080. May not work with RTX 3000 series.
+
 ## Requirements
 
 python 3.6

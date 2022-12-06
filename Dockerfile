@@ -6,6 +6,9 @@ RUN apt-get update && apt-get install -y python3.6 wget python3-pip libsm6 libxe
 WORKDIR /main_dir
 ADD requirements.txt /main_dir/env_files
 RUN pip3 install -U pip && pip3 install -r /main_dir/env_files/requirements.txt && python3 -m ipykernel install --user --name python3
-RUN mkdir -p /.local/share/jupyter && chown -R $(id -u):$(id -g) /.local/share/jupyter
+RUN useradd -ms /bin/bash docker
+USER docker
+RUN export PATH=$PATH:~/.local/bin
+#RUN sudo chown -R $(id -u):$(id -g) /usr/local/bin
 
 WORKDIR /main_dir/CST_v1
