@@ -23,7 +23,7 @@ class EpochSaver(tf.keras.callbacks.Callback):
             print(self.model_name + str(epoch + 1) + ".h5")
 
 
-class ContrastiveStabilityTraining:
+class CNNStabilityTraining:
     def __init__(self, model, tile_size, dist_params={}, alpha=0):
         self.model = model
         self.class_mode = "binary" if self.model.layers[-1].units == 1 else ""

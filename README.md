@@ -1,6 +1,6 @@
-# Contrastive Learning-based Stability Training
+# Convolutional Neural Network Stability Training
 
-Contrastive Learning-based Stability Training (CST), in the context of deep learning for digital pathology, is proposed as a method to increase DL model robustness to image variability caused by the use of different slide scanners and IHC stains. Distortions in color, contrast, brightness and blur were used for CST, in accordance with the perceived differences between WSIs  from different scanners and with different IHC.
+Convolutional Neural Network Stability Training (CST), in the context of deep learning for digital pathology, is proposed as a method to increase DL model robustness to image variability caused by the use of different slide scanners and IHC stains. Distortions in color, contrast, brightness and blur were used for CST, in accordance with the perceived differences between WSIs  from different scanners and with different IHC.
 
 <img align="center" src="static/cst_segmentation.png" width="800">
 
