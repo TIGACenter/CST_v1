@@ -53,34 +53,39 @@ def train(config_path=None):
     with open(config_path) as c:
         conf = json.load(c)
 
+    preprocessing_fn = utils.thesis_preprocessing
+    # preprocessing_fn = utils.normalize_image
+
     # create generator
     if conf["val_data_path"] is None:
         t_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-            preprocessing_function=utils.normalize_image,
-            validation_split=conf["val_split"]
+            preprocessing_function=preprocessing_fn,
+            validation_split=conf["val_split"],
         )
-        t_gen.validation_split = conf["val_split"],
         t_flow = t_gen.flow_from_directory(
             directory=conf["train_data_path"],
             target_size=(conf["tile_size"], conf["tile_size"]),
             color_mode="rgb",
             batch_size=conf["batch_size"],
             class_mode=conf["class_mode"],
+            classes=conf["classes"],
             subset="training",
             shuffle=True
         )
+
         v_flow = t_gen.flow_from_directory(
             directory=conf["train_data_path"],
             target_size=(conf["tile_size"], conf["tile_size"]),
             color_mode="rgb",
             batch_size=conf["batch_size"],
             class_mode=conf["class_mode"],
+            classes=conf["classes"],
             shuffle=True,
             subset="validation"
         )
     else:
         t_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-            preprocessing_function=utils.normalize_image
+            preprocessing_function=preprocessing_fn
         )
         t_flow = t_gen.flow_from_directory(
             directory=conf["train_data_path"],
@@ -88,10 +93,11 @@ def train(config_path=None):
             color_mode="rgb",
             batch_size=conf["batch_size"],
             class_mode=conf["class_mode"],
+            classes=conf["classes"],
             shuffle=True
         )
         v_gen = tf.keras.preprocessing.image.ImageDataGenerator(
-            preprocessing_function=utils.normalize_image
+            preprocessing_function=preprocessing_fn
         )
         v_flow = v_gen.flow_from_directory(
             directory=conf["val_data_path"],
@@ -99,16 +105,17 @@ def train(config_path=None):
             color_mode="rgb",
             batch_size=conf["batch_size"],
             class_mode=conf["class_mode"],
+            classes=conf["classes"],
             shuffle=True,
         )
 
     # load/create model
     output_node_size = 1 if conf["class_mode"] == "binary" else t_flow.num_classes
     model = utils.create_thesis_model(conf["tile_size"], 3, conf["pretrained_model_path"],
-                                      output_node_size, "resnet")
+                                      output_node_size, conf["arq"])
 
     # create cst instance
-    cst = CST.ContrastiveStabilityTraining(
+    cst = CST.CNNStabilityTraining(
         model=model,
         tile_size=conf["tile_size"],
         dist_params=conf["dist_params"],
@@ -119,7 +126,7 @@ def train(config_path=None):
     opt = tf.keras.optimizers.get(conf["optimizer"])
     metrics =[DEFAULT_METRICS[i] if i in DEFAULT_METRICS else i for i in conf["metrics"] ]
     loss = tf.keras.losses.get(conf["loss"])
-    cst.compile_cst(optimizer=opt, metrics=metrics, loss=loss)
+    cst.compile_cst(optimizer=opt, metrics=metrics, loss=loss, loss_modality=conf["loss_modality"])
 
     # train
     class_weight = utils.get_class_weights(t_flow.classes)

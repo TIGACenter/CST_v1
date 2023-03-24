@@ -1,9 +1,10 @@
 {
     "tile_size": 128,
-    "alpha": 0.0,
+    "alpha": 10.0,
     "dist_params": {
         "contrast": {"lower": 0.8, "upper": 1.2},
         "color": {"factor": [5,0,5]},
+        "blur": {"kernel_size": 2, "sigma": 1.0},
         "brightness": {"max_delta": 0.3},
         "normalize": true
     },
@@ -21,7 +22,7 @@
     "pretrained_model_path": "/main_dir/felipe/projects/epi_seg/src/models/20200127_InceptionV3_lossST0e+00_cRGB_15pics_modeRangePrep_pAre0_p16_optSGDlr1e-04d1e-06m9e-01_128px_e15.h5",
     "save_all_epochs": true,
     "model_save_path": "/main_dir/felipe/projects/CST_v1/models",
-    "model_name": "no_cst_v1",
+    "model_name": "new_CST6_alpha10_DC2",
     "save_metrics": true,
     "epochs": 15,
     "batch_size": 64,

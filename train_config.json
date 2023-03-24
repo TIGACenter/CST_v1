@@ -15,6 +15,7 @@
         }
     },
     "loss": "binary_crossentropy",
+    "loss_modality": "cst_loss",
     "class_mode": "binary",
     "pretrained_model_path": null,
     "save_all_epochs": true,
@@ -26,5 +27,6 @@
     "metrics": ["binary_crossentropy", "recall", "precision", "f1", "auc"],
     "train_data_path": "data/aj/IDC_regular_ps50_idx5",
     "val_data_path": null,
-    "val_split": 0.2
+    "val_split": 0.2,
+    "classes": null
 }
