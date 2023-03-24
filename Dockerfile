@@ -11,4 +11,5 @@ USER docker
 RUN export PATH=$PATH:~/.local/bin
 #RUN sudo chown -R $(id -u):$(id -g) /usr/local/bin
 
-WORKDIR /main_dir/CST_v1
+# copy files into container
+ADD ./* /main_dir/CST_v1/

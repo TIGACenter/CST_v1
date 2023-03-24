@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from cv2 import cvtColor, COLOR_RGB2BGR
 import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.applications import InceptionV3, ResNet50
@@ -19,6 +20,11 @@ def normalize_image(image):
     norm_image -= 0.5
     norm_image *= 2.
     return norm_image
+
+
+def thesis_preprocessing(image):
+    # return normalize_image(cvtColor(image, COLOR_RGB2BGR))
+    return cvtColor(image, COLOR_RGB2BGR)
 
 
 def denormalize_image(image):

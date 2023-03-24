@@ -1,30 +1,34 @@
 {
     "tile_size": 128,
-    "alpha": 10.0,
+    "alpha": 0.0,
     "dist_params": {
         "contrast": {"lower": 0.8, "upper": 1.2},
-        "color": {"factor": [20,0,20]},
-        "blur": {"kernel_size": 1, "sigma": 3.0},
-        "brightness": {"max_delta": 0.3}
+        "color": {"factor": [5,0,5]},
+        "brightness": {"max_delta": 0.3},
+        "normalize": true
     },
     "optimizer": {
-        "class_name": "Adam",
+        "class_name": "SGD",
         "config": {
-            "lr": 0.0001,
-            "amsgrad": true
+            "lr": 1e-3,
+            "momentum": 0.9,
+            "decay": 1e-6
         }
     },
     "loss": "binary_crossentropy",
+    "loss_modality": "cst_loss",
     "class_mode": "binary",
-    "pretrained_model_path": null,
+    "pretrained_model_path": "/main_dir/felipe/projects/epi_seg/src/models/20200127_InceptionV3_lossST0e+00_cRGB_15pics_modeRangePrep_pAre0_p16_optSGDlr1e-04d1e-06m9e-01_128px_e15.h5",
     "save_all_epochs": true,
-    "model_save_path": "models",
-    "model_name": "cst_3_real",
+    "model_save_path": "/main_dir/felipe/projects/CST_v1/models",
+    "model_name": "no_cst_v1",
     "save_metrics": true,
-    "epochs": 10,
-    "batch_size": 32,
+    "epochs": 15,
+    "batch_size": 64,
     "metrics": ["binary_crossentropy", "recall", "precision", "f1", "auc"],
-    "train_data_path": "/main_dir/felipe/schroederubuntu/isilon_scans/Scans/TIGA/People/Andi/epi_seg/128px_x20_RGB_Box1-4_modeRangePreprocessing_partialsAre0_p16/X",
+    "train_data_path": "/main_dir/felipe/projects/epi_seg/src/data/train/split/128px_x20_RGB_Box1-4_modeRangePreprocessing_partialsAre0_p16/X",
     "val_data_path": null,
-    "val_split": 0.2
+    "val_split": 0.2,
+    "arq": "InceptionV3",
+    "classes": ["0","1"]
 }
