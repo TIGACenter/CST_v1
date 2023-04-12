@@ -2,10 +2,6 @@
     "tile_size": 128,
     "alpha": 0.0,
     "dist_params": {
-        "contrast": {"lower": 0.8, "upper": 1.2},
-
-        "color": {"factor": [5,0,5]},
-        "brightness": {"max_delta": 0.3},
         "normalize": true
     },
     "optimizer": {
@@ -19,10 +15,10 @@
     "loss": "binary_crossentropy",
     "loss_modality": "da_loss",
     "class_mode": "binary",
-    "pretrained_model_path": "/main_dir/felipe/projects/epi_seg/src/models/20200127_InceptionV3_lossST0e+00_cRGB_15pics_modeRangePrep_pAre0_p16_optSGDlr1e-04d1e-06m9e-01_128px_e15.h5",
+    "pretrained_model_path": "/main_dir/felipe/projects/CST_v1/20200127_InceptionV3_lossST0e+00_cRGB_15pics_modeRangePrep_pAre0_p16_optSGDlr1e-04d1e-06m9e-01_128px_e15.h5",
     "save_all_epochs": true,
     "model_save_path": "/main_dir/felipe/projects/CST_v1/models",
-    "model_name": "simple_da_DC1",
+    "model_name": "new_BM",
     "save_metrics": true,
     "epochs": 15,
     "batch_size": 64,

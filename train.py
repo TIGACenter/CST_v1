@@ -119,14 +119,15 @@ def train(config_path=None):
         model=model,
         tile_size=conf["tile_size"],
         dist_params=conf["dist_params"],
-        alpha=conf["alpha"]
+        alpha=conf["alpha"],
+        loss_modality=conf["loss_modality"]
     )
 
     # compile
     opt = tf.keras.optimizers.get(conf["optimizer"])
     metrics =[DEFAULT_METRICS[i] if i in DEFAULT_METRICS else i for i in conf["metrics"] ]
     loss = tf.keras.losses.get(conf["loss"])
-    cst.compile_cst(optimizer=opt, metrics=metrics, loss=loss, loss_modality=conf["loss_modality"])
+    cst.compile_cst(optimizer=opt, metrics=metrics, loss=loss)
 
     # train
     class_weight = utils.get_class_weights(t_flow.classes)

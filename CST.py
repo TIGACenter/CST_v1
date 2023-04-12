@@ -24,12 +24,13 @@ class EpochSaver(tf.keras.callbacks.Callback):
 
 
 class CNNStabilityTraining:
-    def __init__(self, model, tile_size, dist_params={}, alpha=0):
+    def __init__(self, model, tile_size, dist_params={}, alpha=0, loss_modality="cst_loss"):
         self.model = model
         self.class_mode = "binary" if self.model.layers[-1].units == 1 else ""
         self.tile_size = tile_size
         self.dist_params = dist_params
         self.alpha = alpha
+        self.loss_modality = loss_modality
         self.build_cst_wrap()
 
     # TODO: correctly include the cst vs the normal or the data augmented training modalities
@@ -38,23 +39,27 @@ class CNNStabilityTraining:
         self.i_dist = tf.keras.layers.Lambda(dist_fn,
             arguments={"dist_params": self.dist_params, "tile_size":self.tile_size})(self.i)
 
-        # train with cst_loss
-        self.i_norm = tf.keras.layers.Lambda(dist_fn,
-            arguments={"dist_params": {"normalize": self.dist_params["normalize"]}, "tile_size":self.tile_size})(self.i)
-        self.x_i = self.model(self.i_norm)
-        self.x_i_dist = self.model(self.i_dist)
+        print(f"Loss modality: {self.loss_modality}")
 
-        # # train with da_loss
-        # self.i_norm = tf.keras.layers.Lambda(dist_fn,
-        #     arguments={"dist_params": self.dist_params, "tile_size": self.tile_size})(self.i)
-        # self.x_i = self.model(self.i_norm)
-        # self.x_i_dist = self.x_i
+        if self.loss_modality == "da_loss":
+            # train with da_loss
+            self.i_norm = tf.keras.layers.Lambda(dist_fn,
+                arguments={"dist_params": self.dist_params, "tile_size": self.tile_size})(self.i)
+            self.x_i = self.model(self.i_norm)
+            self.x_i_dist = self.x_i
 
+        else:
+            # train with cst_loss
+            self.i_norm = tf.keras.layers.Lambda(dist_fn,
+                arguments={"dist_params": {"normalize": self.dist_params["normalize"]},
+                           "tile_size":self.tile_size})(self.i)
+            self.x_i = self.model(self.i_norm)
+            self.x_i_dist = self.model(self.i_dist)
 
         self.cst_model = tf.keras.models.Model(inputs=self.i, outputs=self.x_i)
 
-    def compile_cst(self, optimizer, loss, loss_modality="cst_loss", metrics=[]):
-        if loss_modality=="da_loss":
+    def compile_cst(self, optimizer, loss, metrics=[]):
+        if self.loss_modality=="da_loss":
             cst_loss = self.da_loss(self.x_i_dist, loss, self.alpha, self.class_mode)
         else:
             cst_loss = self.cst_loss(self.x_i_dist, loss, self.alpha, self.class_mode)
@@ -121,8 +126,6 @@ class CNNStabilityTraining:
         def internal_loss(y_true, y_pred):
             l = l_0(y_true, y_pred)
             return l
-
-        return internal_loss
 
         return internal_loss
 
