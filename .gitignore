@@ -242,4 +242,5 @@ cython_debug/
 *.csv
 applications/
 data/
+models/*
 !static/*.png
