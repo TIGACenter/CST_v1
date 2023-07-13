@@ -10,33 +10,41 @@ from metrics import recall_m, precision_m, f1_m, auc_m
 
 DEFAULT_CONFIG_PATH = "train_config.json"
 
-DEFAULT_CONFIG = {
-    "alpha": 1.0,
-    "dist_params": {
-        "contrast": {"lower": 0.8, "upper": 1.2},
-        "color": {"factor": [20,0,20]},
-        "blur": {"kernel_size": 1, "sigma": 3.0},
-        "brightness": {"max_delta":0.3}
-    },
-    "optimizer": {
-        "class_name": "Adam",
-        "config": {
-            "lr": 0.0001,
-            "amsgrad": True
-        }
-    },
-    "loss": "binary_crossentropy",
-    "class_mode": "binary",
-    "pretrained_model_path": None,
-    "save_all_epochs": True,
-    "model_save_path": "../models",
-    "model_name": "model_name",
-    "save_metrics": True,
-    "epochs": 10,
-    "metrics": ["binary_crossentropy", "recall", "precision", "f1", "auc"],
-    "train_data_path": "../data/histo",
-    "val_data_path": None
-}
+# DEFAULT_CONFIG = {
+#     "tile_size": 128,
+#     "alpha": 1.0,
+#     "dist_params": {
+#         "contrast": {"lower": 0.8, "upper": 1.2},
+#         "color": {"factor": [20,0,20]},
+#         "blur": {"kernel_size": 1, "sigma": 3.0},
+#         "brightness": {"max_delta":0.3},
+#         "normalize": True
+#     },
+#     "optimizer": {
+#         "class_name": "Adam",
+#         "config": {
+#             "lr": 0.0001,
+#             "amsgrad": True
+#         }
+#     },
+#     "loss": "binary_crossentropy",
+#     "loss_modality": "cst_loss",
+#     "class_mode": "binary",
+#     "pretrained_model_path": None,
+#     "save_all_epochs": True,
+#     "model_save_path": "models",
+#     "model_name": "default_model_name",
+#     "save_metrics": True,
+#     "epochs": 10,
+#     "batch_size": 32,
+#     "metrics": ["binary_crossentropy", "recall_m", "precision_m", "f1_m", "auc_m"],
+#     "train_data_path": "data/aj/IDC_regular_ps50_idx5",
+#     "val_data_path": None,
+#     "val_split": 0.2,
+#     "arq": "InceptionV3",
+#     "classes": ["0", "1"]
+# }
+
 
 DEFAULT_METRICS = {
     "recall": recall_m,

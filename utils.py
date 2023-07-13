@@ -68,8 +68,11 @@ def create_thesis_model(tile_size=128, channels=3, pretrained_path=None, final_l
         model = tf.keras.models.Sequential()
         if arq == "resnet":
             base = ResNet50(weights='imagenet', include_top=False, input_shape=(tile_size, tile_size, channels))
-        else:
+        elif arq == "InceptionV3":
             base = InceptionV3(weights='imagenet', include_top=False, input_shape=(tile_size, tile_size, channels))
+        else:
+            print("Please make sure parameter 'arq' is either 'resnet' or 'InceptionV3'. Defaulting to resnet.")
+            base = ResNet50(weights='imagenet', include_top=False, input_shape=(tile_size, tile_size, channels))
         model.add(base)
         model.add(layers.Flatten())
         model.add(layers.Dense(128, activation='relu'))
