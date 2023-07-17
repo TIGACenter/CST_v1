@@ -12,7 +12,7 @@ import cv2
 import utils
 
 
-def load_aj_idc(PATH=None):
+def load_aj_idc(PATH="data"):
     """
     Dataset: Invasive Ductal Carcinoma Identification.
     Author: Andrew Janowczyk
@@ -21,10 +21,8 @@ def load_aj_idc(PATH=None):
            image analysis: A comprehensive tutorial with selected use cases. Journal of
            pathology informatics, 7(1), 29. https://doi.org/10.4103/2153-3539.186902
     """
-
     URL = "http://andrewjanowczyk.com/wp-static/IDC_regular_ps50_idx5.zip"
-    if PATH is None:
-        PATH = "data/aj"
+    PATH = os.path.join(PATH, "aj")
 
     print("Dataset: Invasive Ductal Carcinoma Identification.\nAuthor: Andrew Janowczyk")
     print("source: http://andrewjanowczyk.com/deep-learning/")
@@ -57,9 +55,11 @@ def load_aj_idc(PATH=None):
     print("...Organization complete")
 
 
-def load_cifar_10(PATH=None):
-    if PATH is None:
-        PATH = "data/cifar-10"
+def load_cifar_10(PATH="data"):
+    # if PATH is None:
+    #     PATH = "data/cifar-10"
+
+    PATH = os.path.join(PATH, "cifar-10")
 
     print("Dataset: CIFAR-10")
     print("Source: https://www.cs.toronto.edu/~kriz/cifar.html")
@@ -81,7 +81,7 @@ def load_cifar_10(PATH=None):
     print("...Download complete")
 
 
-def load_cifar_10_c():
+def load_cifar_10_c(PATH="data"):
     """
     Dataset: CIFAR-10 Corrupted.
     Author: Dan Hendrycks and Thomas Dietterich
@@ -92,7 +92,7 @@ def load_cifar_10_c():
     """
 
     URL = "https://zenodo.org/record/2535967/files/CIFAR-10-C.tar?download=1"
-    PATH = "data"
+    # PATH = "data"
 
     print("Dataset: CIFAR-10 Corrupted")
     print("Source: https://zenodo.org/record/2535967#.Yr8BD79BzmE")
@@ -129,21 +129,22 @@ def load_cifar_10_c():
 if __name__ == "__main__":
     help = "Name of the dataset you want to download. Options: idc, cifar-10, cifar-10-c"
     parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--name', nargs='+',
-                        help="Name of the dataset you want to download", type=str)
+    parser.add_argument('-n', '--name', nargs='+',  type=str,
+                        help="Name of the dataset you want to download")
+    parser.add_argument('-p', '--path', type=str, help="Download path for dataset")
     args = parser.parse_args()
     print(args.name)
     if args.name is None:
-        load_aj_idc()
+        load_aj_idc(PATH=args.path)
     else:
-        f = False
+        d = False
         if "idc" in args.name:
-            load_aj_idc()
+            load_aj_idc(PATH=args.path)
             d = True
         if "cifar-10-c" in args.name:
-            load_cifar_10_c()
+            load_cifar_10_c(PATH=args.path)
             d = True
         if  "cifar-10" in args.name:
-            load_cifar_10()
+            load_cifar_10(PATH=args.path)
             d = True
         if not d: print("No valid dataset was provided. Run --help for extra info.")

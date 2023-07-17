@@ -88,7 +88,7 @@ $ python3 load_data.py --name <dataset1> <dataset2> <...> \
   
   
 # options for --name are idc, cifar-10, cifar-10-c. Defaults to idc.
-# path corresponds to the download path. Defaults to /main_dir/CST_v1/models/
+# path corresponds to the download path. Defaults to /main_dir/CST_v1/data/
             
 # e.g. $ python3 load_data.py --name idc cifar-10
 ```
@@ -109,7 +109,7 @@ Then open the url in your browser.
 
 #### Without docker:
 
-Same us above. If python 3.6 is your default version, just use python instead of python3.6
+Same us above. If python 3.6 is your default version, just use python instead of python3
 
 
 ## Config file for training
