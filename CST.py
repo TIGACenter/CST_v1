@@ -102,7 +102,7 @@ class CNNStabilityTraining:
     def save_model(self, model_save_path, model_name):
         model_new_dir = os.path.join(model_save_path, model_name)
         pathlib.Path(model_new_dir).mkdir(parents=True, exist_ok=True)
-        self.cst_model.layers[1].save(os.path.join(model_new_dir, model_name) + ".h5")
+        self.cst_model.layers[-1].save(os.path.join(model_new_dir, model_name) + ".h5")
 
     @staticmethod
     def cst_loss(x_i_dist, l_0, alpha, class_mode):

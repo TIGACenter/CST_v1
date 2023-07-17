@@ -47,10 +47,10 @@ DEFAULT_CONFIG_PATH = "train_config.json"
 
 
 DEFAULT_METRICS = {
-    "recall": recall_m,
-    "precision": precision_m,
-    "f1": f1_m,
-    "auc": auc_m
+    "recall_m": recall_m,
+    "precision_m": precision_m,
+    "f1_m": f1_m,
+    "auc_m": auc_m
 }
 
 
